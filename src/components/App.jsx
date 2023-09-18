@@ -10,6 +10,18 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    if (!contacts) return;
+    this.setState(() => ({
+      contacts: JSON.parse(contacts),
+    }));
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+
   handleFilter = ({ target: { value } }) => {
     this.setState(() => ({
       filter: value,
@@ -25,6 +37,7 @@ export class App extends Component {
 
   submitContact = ({ name, number }) => {
     const id = nanoid();
+    const contact = { id: id, name: name, number: number };
     this.setState(prevState => ({
       contacts: [...prevState.contacts, { id, name, number }],
     }));
@@ -44,7 +57,11 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <Form contacts={contacts} onSubmit={this.submitContact} />
         <h2>Contacts</h2>
-        <FilterInput fiterValue={filter} handleFilter={this.handleFilter} />
+        {contacts.length > 0 ? (
+          <FilterInput fiterValue={filter} handleFilter={this.handleFilter} />
+        ) : (
+          <p>There no contacts yet</p>
+        )}
         {filtered.length > 0 && (
           <ContactList
             contacts={filtered}
