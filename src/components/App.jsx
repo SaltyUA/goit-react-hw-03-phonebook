@@ -37,7 +37,6 @@ export class App extends Component {
 
   submitContact = ({ name, number }) => {
     const id = nanoid();
-    const contact = { id: id, name: name, number: number };
     this.setState(prevState => ({
       contacts: [...prevState.contacts, { id, name, number }],
     }));
