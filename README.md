@@ -1,2 +1,3 @@
-Phonebook App(GoIT React Homework #3)
-Now it's working with local storage
+<h1>Phonebook App</h1>
+<p>(GoIT React Homework #3)</p>
+<p>Now it's working with local storage</p>
