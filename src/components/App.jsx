@@ -18,9 +18,18 @@ export class App extends Component {
     }));
   }
 
-  componentDidUpdate() {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
   }
+
+  submitContact = ({ name, number }) => {
+    const id = nanoid();
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, { id, name, number }],
+    }));
+  };
 
   handleFilter = ({ target: { value } }) => {
     this.setState(() => ({
@@ -33,13 +42,6 @@ export class App extends Component {
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
-  };
-
-  submitContact = ({ name, number }) => {
-    const id = nanoid();
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, { id, name, number }],
-    }));
   };
 
   handleDelete = id => {
